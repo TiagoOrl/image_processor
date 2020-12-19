@@ -12,7 +12,7 @@
 // uso / usage (linux)
 
 // compilação, comile with:
-// g++ -o hello main.cpp -I /usr/include/opencv4 -lopencv_core -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc
+// g++ -o process main.cpp -I /usr/include/opencv4 -lopencv_core -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc
 
 // run / rodar:
 // process filename
@@ -26,7 +26,7 @@ void filter_contrast(unsigned char & p);
 
 int main(int argc, char const *argv[])
 {
-    if (agrc != 2){
+    if (argc != 2){
         printf("usage: process imgfilename");
         return EXIT_FAILURE;
     }
