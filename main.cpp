@@ -69,13 +69,13 @@ int main(int argc, char const *argv[])
             // here is where we process each channel, uncomment/comment then to change the filter you want to use
             // to apply a filter to an image, you have to apply the filter to each of the 3 channel image
 
-            // threshold(c_red[index]);
-            // threshold(c_green[index]);
-            // threshold(c_blue[index]);
+            threshold(c_red[index]);
+            threshold(c_green[index]);
+            threshold(c_blue[index]);
 
-            sobel_edgeDetect(c_red, c_newRed[index], index, img_input.cols);
-            sobel_edgeDetect(c_green, c_newGreen[index], index, img_input.cols);
-            sobel_edgeDetect(c_blue, c_newBlue[index], index, img_input.cols);
+            // sobel_edgeDetect(c_red, c_newRed[index], index, img_input.cols);
+            // sobel_edgeDetect(c_green, c_newGreen[index], index, img_input.cols);
+            // sobel_edgeDetect(c_blue, c_newBlue[index], index, img_input.cols);
 
             // filter_contrast(c_blue[index]);
             // filter_contrast(c_red[index]);
