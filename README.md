@@ -9,3 +9,5 @@ Simples implementação de como escanear uma imagem usando openCV, primeiro, con
 depois criamos cópias de cada canal {RGB}, assim podendo processar cada pixel de cada canal separadamente e "Juntá-los" 
 em uma image final
 
+
+Great video about Image Processing: https://www.youtube.com/watch?v=mRM5Js3VLCk&t=1210s
