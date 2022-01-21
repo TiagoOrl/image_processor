@@ -30,7 +30,7 @@ std::string selectedFilter;
 int main(int argc, char const *argv[])
 {
     if (argc != 3){
-        printf("usage: process --type imgfilename");
+        printf("usage: process --type imgfilename\n");
         return EXIT_FAILURE;
     }
 
