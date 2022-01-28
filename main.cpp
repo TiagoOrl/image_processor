@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 
     std::string image_path = cv::samples::findFile(argv[2]);
     selectedFilter = argv[1];
-    cv::Mat img_input = cv::imread(image_path, cv::IMREAD_REDUCED_COLOR_4);
+    cv::Mat img_input = cv::imread(image_path, cv::IMREAD_REDUCED_COLOR_2);
 
 
     if(img_input.empty())
