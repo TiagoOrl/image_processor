@@ -5,7 +5,7 @@
 #include <opencv4/opencv2/imgproc.hpp>
 
 #include <chrono>
-
+#include <string>
 #include <iostream>
 
 
@@ -21,7 +21,7 @@
 
 void blur_gauss(unsigned char * channel_input, unsigned char &p, int index, int colSize);
 void sobel_edgeDetect(cv::Mat &imgInput, cv::Mat &imgOutput);
-void threshold (cv::Mat &imgInput, cv::Mat &imgOut);
+void threshold (cv::Mat &imgInput, cv::Mat &imgOut, int threVal);
 void filter_contrast(cv::Mat &imgInput, cv::Mat &imgOut);
 
 std::string selectedFilter;
@@ -29,12 +29,12 @@ std::string selectedFilter;
 
 int main(int argc, char const *argv[])
 {
-    if (argc != 3){
+    if (argc < 3){
         printf("usage: process --type imgfilename\n");
         return EXIT_FAILURE;
     }
 
-    std::string image_path = cv::samples::findFile(argv[2]);
+    std::string image_path = cv::samples::findFile(argv[argc - 1]);
     selectedFilter = argv[1];
     cv::Mat img_input = cv::imread(image_path, cv::IMREAD_REDUCED_COLOR_2);
 
@@ -49,9 +49,15 @@ int main(int argc, char const *argv[])
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    if (selectedFilter.compare("--thre") == 0)
-        threshold(img_input, imgOutput);
+    if (selectedFilter.compare("--thre") == 0) {
+        if (argc != 4) {
+            std::cout << "Usage: ./process --thre {threVal} img.png" << std::endl;
+            return 1;
+        }
+        threshold(img_input, imgOutput, std::stoi(argv[2]));
 
+    }
+        
     else if (selectedFilter.compare("--contrast") == 0) {
         filter_contrast(img_input, imgOutput);
 
@@ -127,43 +133,30 @@ void filter_contrast (cv::Mat &imgInput, cv::Mat &imgOut) {
 }
 
 
-void threshold (cv::Mat &imgInput, cv::Mat &imgOut) {
+void threshold (cv::Mat &imgInput, cv::Mat &imgOut, int threVal) {
 
-    cv::cvtColor(imgInput, imgInput, cv::COLOR_RGBA2RGB);
+    cv::cvtColor(imgInput, imgInput, cv::COLOR_RGBA2GRAY);
 
-    cv::Mat inputChannels[3];
-    cv::Mat outChannels[3];
+    cv::Mat inputChannels[1];
+    cv::Mat outChannels[1];
 
     cv::split(imgInput, inputChannels);
     cv::split(imgInput, outChannels);
 
-    uchar *inputBlue = inputChannels[0].data;
-    uchar *inputGreen = inputChannels[1].data;
-    uchar *inputRed = inputChannels[2].data;
-
-    uchar *outBlue = outChannels[0].data;
-    uchar *outGreen = outChannels[1].data;
-    uchar *outRed = outChannels[2].data;
+    uchar *inputC = inputChannels[0].data;
+    uchar *outC = outChannels[0].data;
+    
 
     for (int i = 0; i < imgInput.rows; i++)
         for (int j = 0;j < imgInput.cols; j++) {
 
             int index = i * imgInput.cols + j;
 
-            if (inputRed[index] > 100) 
-                outRed[index] = 255;
+            if (inputC[index] > threVal) 
+                outC[index] = 255;
             else
-                outRed[index] = 10;
+                outC[index] = 0;
 
-            if (inputGreen[index] > 100) 
-                outGreen[index] = 255;
-            else
-                outGreen[index] = 10;
-
-            if (inputBlue[index] > 100) 
-                outBlue[index] = 255;
-            else
-                outBlue[index] = 10;
         }
 
     cv::merge(outChannels, sizeof(outChannels)/sizeof(*outChannels), imgOut);
