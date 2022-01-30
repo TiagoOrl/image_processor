@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 
+#include "main.h"
 
 // uso / usage (linux)
 
@@ -19,13 +20,7 @@
 // run / rodar:
 // process filename
 
-void blur_gauss(unsigned char * channel_input, unsigned char &p, int index, int colSize);
-void sobel_edgeDetect(cv::Mat &imgInput, cv::Mat &imgOutput);
-void threshold (cv::Mat &imgInput, cv::Mat &imgOut, int threVal);
-void filter_contrast(cv::Mat &imgInput, cv::Mat &imgOut);
-
 std::string selectedFilter;
-
 
 int main(int argc, char const *argv[])
 {
@@ -184,7 +179,7 @@ void sobel_edgeDetect(cv::Mat &imgInput, cv::Mat &imgOutput) {
 
             int index = i * imgInput.cols + j;
 
-            int v_kernel = (
+            int h_kernel = (
                 inputGrey[index] * 0.0 +
                         
                 inputGrey[index - 1] * 2.0 +     // west
@@ -193,24 +188,24 @@ void sobel_edgeDetect(cv::Mat &imgInput, cv::Mat &imgOutput) {
                 inputGrey[index - colSize] * 0.0 +    // north
                 inputGrey[index + colSize] * 0.0 +    // south
                 
-                inputGrey[index - colSize - 1] * 1.0 +    // northwest
+                inputGrey[index - colSize - 1] *  1.0 +    // northwest
                 inputGrey[index - colSize + 1] * -1.0 +    // northeast
-                inputGrey[index + colSize - 1] * 1.0 +    // southwest
+                inputGrey[index + colSize - 1] *  1.0 +    // southwest
                 inputGrey[index + colSize + 1] * -1.0 ) ;   // southeast
 
-            int h_kernel = (
+            int v_kernel = (
                 inputGrey[index] * 0.0 +
                         
                 inputGrey[index - 1] * 0.0 +     // west
                 inputGrey[index + 1] * 0.0 +     // east
                 
-                inputGrey[index - colSize] * 2.0 +    // north
-                inputGrey[index + colSize] * -2.0 +    // south
+                inputGrey[index - colSize] * -2.0 +    // north
+                inputGrey[index + colSize] * 2.0 +    // south
                 
-                inputGrey[index - colSize - 1] * 1.0 +    // northwest
-                inputGrey[index - colSize + 1] * 1.0 +    // northeast
-                inputGrey[index + colSize - 1] * -1.0 +    // southwest
-                inputGrey[index + colSize + 1] * -1.0 ) ;   // southeast
+                inputGrey[index - colSize - 1] * -1.0 +    // northwest
+                inputGrey[index - colSize + 1] * -1.0 +    // northeast
+                inputGrey[index + colSize - 1] *  1.0 +    // southwest
+                inputGrey[index + colSize + 1] *  1.0 ) ;   // southeast
 
             outGrey[index] = (unsigned char) std::abs( (h_kernel + v_kernel) / 2);
     }
