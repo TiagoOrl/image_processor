@@ -18,40 +18,48 @@ void ImageProcessing::sobel(cv::Mat &imgInput, cv::Mat &imgOutput)
 
     int colSize = imgInput.cols;
 
-    for (int i = 0; i < imgInput.rows; i++)
+    for (int i = 0; i < imgInput.rows; i++) {
         for (int j = 0;j < imgInput.cols; j++) {
 
             int index = i * imgInput.cols + j;
 
-            int h_kernel = (
-                inputGrey[index] * 0.0 +
-                        
-                inputGrey[index - 1] * 2.0 +     // west
-                inputGrey[index + 1] * -2.0 +     // east
-                
-                inputGrey[index - colSize] * 0.0 +    // north
-                inputGrey[index + colSize] * 0.0 +    // south
-                
-                inputGrey[index - colSize - 1] *  1.0 +    // northwest
-                inputGrey[index - colSize + 1] * -1.0 +    // northeast
-                inputGrey[index + colSize - 1] *  1.0 +    // southwest
-                inputGrey[index + colSize + 1] * -1.0 ) ;   // southeast
+            float hKernel[] = {
+                1.0f, 0.0f, -1.0f,
+                2.0f, 0.0f, -2.0f,
+                1.0f, 0.0f, -1.0f
+            };
 
-            int v_kernel = (
-                inputGrey[index] * 0.0 +
-                        
-                inputGrey[index - 1] * 0.0 +     // west
-                inputGrey[index + 1] * 0.0 +     // east
-                
-                inputGrey[index - colSize] * -2.0 +    // north
-                inputGrey[index + colSize] * 2.0 +    // south
-                
-                inputGrey[index - colSize - 1] * -1.0 +    // northwest
-                inputGrey[index - colSize + 1] * -1.0 +    // northeast
-                inputGrey[index + colSize - 1] *  1.0 +    // southwest
-                inputGrey[index + colSize + 1] *  1.0 ) ;   // southeast
+            float vKernel[] = {
+                1.0f, 2.0f, 1.0f,
+                0.0f, 0.0f, 0.0f,
+                -1.0f, -2.0f, -1.0f
+            };
 
-            outGrey[index] = (unsigned char) std::abs( (h_kernel + v_kernel) / 2);
+            uchar hSum = 0;
+            uchar vSum = 0;
+            int rowCount = -1;
+            int colCount = -1;
+            size_t size = imgInput.cols * imgInput.rows;
+
+            for (size_t i = 0; i < 9; i++)
+            {
+                if (i % 3 == 0 && i != 0)
+                    rowCount++;
+                
+                int kIndex = index + rowCount * imgInput.cols + colCount;
+                if (kIndex < 0 || kIndex >= size)
+                    continue;
+                
+                hSum += inputGrey[kIndex] * hKernel[i];
+                vSum += inputGrey[kIndex] * vKernel[i];
+
+                colCount++;
+                if (colCount == 1)
+                    colCount = -1;
+            }
+        
+            outGrey[index] = (unsigned char) std::abs( (hSum + vSum) / 2);
+        }
     }
 
     cv::merge(outChannels, sizeof(outChannels)/sizeof(*outChannels), imgOutput);
