@@ -3,7 +3,16 @@ GCC=g++
 OPENCV_INCLUDEPATH=/usr/include/opencv4
 OPENCV_LIBS=-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs
 
-process: 
-	$(GCC) -o process main.cpp -I $(OPENCV_INCLUDEPATH) $(OPENCV_LIBS)
+process: img_proc.o main.o
+	$(GCC) -o process main.o img_proc.o $(OPENCV_LIBS) && rm *.o
+
+main.o: main.cpp
+	$(GCC) -c -o main.o main.cpp -I $(OPENCV_INCLUDEPATH)
+
+img_proc.o: src/image_processing.cpp
+	$(GCC) -c -o img_proc.o src/image_processing.cpp -I $(OPENCV_INCLUDEPATH)
+
+cl:
+	rm process *.o
 
 
