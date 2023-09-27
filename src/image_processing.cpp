@@ -35,8 +35,8 @@ void ImageProcessing::sobel(cv::Mat &imgInput, cv::Mat &imgOutput)
                 -1.0f, -2.0f, -1.0f
             };
 
-            uchar hSum = 0;
-            uchar vSum = 0;
+            int hSum = 0;
+            int vSum = 0;
             int rowCount = -1;
             int colCount = -1;
             size_t size = imgInput.cols * imgInput.rows;
