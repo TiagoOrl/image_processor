@@ -23,13 +23,13 @@ void ImageProcessing::sobel(cv::Mat &imgInput, cv::Mat &imgOutput)
 
             int index = i * imgInput.cols + j;
 
-            float hKernel[] = {
+            float hMask[] = {
                 1.0f, 0.0f, -1.0f,
                 2.0f, 0.0f, -2.0f,
                 1.0f, 0.0f, -1.0f
             };
 
-            float vKernel[] = {
+            float vMask[] = {
                 1.0f, 2.0f, 1.0f,
                 0.0f, 0.0f, 0.0f,
                 -1.0f, -2.0f, -1.0f
@@ -50,8 +50,8 @@ void ImageProcessing::sobel(cv::Mat &imgInput, cv::Mat &imgOutput)
                 if (kIndex < 0 || kIndex >= size)
                     continue;
                 
-                hSum += inputGrey[kIndex] * hKernel[i];
-                vSum += inputGrey[kIndex] * vKernel[i];
+                hSum += inputGrey[kIndex] * hMask[i];
+                vSum += inputGrey[kIndex] * vMask[i];
 
                 colCount++;
                 if (colCount == 1)
