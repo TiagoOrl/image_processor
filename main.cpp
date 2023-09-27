@@ -6,8 +6,6 @@
 #include <string>
 #include <iostream>
 
-
-#include "main.h"
 #include "src/image_processing.hpp"
 
 std::string selectedFilter;
