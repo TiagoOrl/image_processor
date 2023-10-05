@@ -9,6 +9,7 @@
 class ImageProcessing 
 {
     public:
+        static void bw(cv::Mat &imgInput, cv::Mat &imgOutput);
         static void sobel(cv::Mat &imgInput, cv::Mat &imgOutput);
         static void filter_contrast(cv::Mat &imgInput, cv::Mat &imgOutput);
         static void threshold(cv::Mat &imgInput, cv::Mat &imgOutput, uint thresholdVal);

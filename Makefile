@@ -1,10 +1,12 @@
 GCC=g++
 
 OPENCV_INCLUDEPATH=/usr/include/opencv4
-OPENCV_LIBS=-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs
+OPEN_CV_LINK = -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs
+OMP = -fopenmp
+FLAGS= $(OPEN_CV_LINK)
 
-process: img_proc.o main.o
-	$(GCC) -o process main.o img_proc.o $(OPENCV_LIBS) && rm *.o
+run: img_proc.o main.o
+	$(GCC) -o run main.o img_proc.o $(FLAGS) && rm *.o
 
 main.o: main.cpp
 	$(GCC) -c -o main.o main.cpp -I $(OPENCV_INCLUDEPATH)
