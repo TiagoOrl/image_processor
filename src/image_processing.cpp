@@ -9,6 +9,8 @@ void ImageProcessing::bw(cv::Mat &imgInput, cv::Mat &imgOutput)
 
     cv::Mat in_rgb[3];
     cv::Mat out_rgb[3];
+    uint width = imgInput.cols;
+    uint height = imgInput.rows;
 
     cv::split(imgInput, in_rgb);
     cv::split(imgInput, out_rgb);
@@ -21,9 +23,9 @@ void ImageProcessing::bw(cv::Mat &imgInput, cv::Mat &imgOutput)
     uchar * outG = out_rgb[1].data;
     uchar * outB = out_rgb[2].data;
 
-    for (int i = 0; i < imgInput.rows; i++) {
-        for (int j = 0;j < imgInput.cols; j++) {
-            int index = i * imgInput.cols + j;
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            int index = i * width + j;
 
             size_t avg = (inR[index] + inG[index] + inB[index]) / 3;
             outR[index] = avg;
