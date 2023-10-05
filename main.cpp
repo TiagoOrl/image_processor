@@ -50,6 +50,10 @@ int main(int argc, char const *argv[])
         ImageProcessing::sobel(img_input, imgOutput);
     }
 
+    else if (selectedFilter.compare("--bw") == 0) {
+        ImageProcessing::bw(img_input, imgOutput);
+    }
+
     else {
         printf("invalid filter param\nsupported params: --constrast, --thre --sobel \naborting...\n\n");
         return 1;
